@@ -113,17 +113,19 @@ function getElementsInDocument(selector) {
  */
 /* istanbul ignore next */
 function getOuterHTMLSnippet(element, ignoreAttrs = []) {
-  const clone = element.cloneNode();
-
-  ignoreAttrs.forEach(attribute =>{
-    clone.removeAttribute(attribute);
-  });
-
-  const reOpeningTag = /^[\s\S]*?>/;
-  const match = clone.outerHTML.match(reOpeningTag);
-
-  return (match && match[0]) || '';
+  try {
+    const clone = element.cloneNode();
+    ignoreAttrs.forEach(attribute =>{
+      clone.removeAttribute(attribute);
+    });
+    const reOpeningTag = /^[\s\S]*?>/;
+    const match = clone.outerHTML.match(reOpeningTag);
+    return (match && match[0]) || '';
+  } catch (error) {
+    return element.localName;
+  }
 }
+
 
 /**
  * Computes a memory/CPU performance benchmark index to determine rough device class.
