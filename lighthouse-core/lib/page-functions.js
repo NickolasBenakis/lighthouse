@@ -114,6 +114,10 @@ function getElementsInDocument(selector) {
 /* istanbul ignore next */
 function getOuterHTMLSnippet(element, ignoreAttrs = []) {
   try {
+    if (ShadowRoot.prototype.isPrototypeOf(element) && element.host && element.localName !== 'a') {
+      element = element.host;
+    }
+
     const clone = element.cloneNode();
     ignoreAttrs.forEach(attribute =>{
       clone.removeAttribute(attribute);
