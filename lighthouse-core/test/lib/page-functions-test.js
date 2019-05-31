@@ -16,8 +16,13 @@ describe('Page Functions', () => {
   let dom;
 
   beforeAll(() => {
-    const {document} = new jsdom.JSDOM().window;
+    const {document, ShadowRoot} = new jsdom.JSDOM().window;
+    global.ShadowRoot = ShadowRoot;
     dom = new DOM(document);
+  });
+
+  afterAll(() => {
+    global.ShadowRoot = undefined;
   });
 
   describe('get outer HTML snippets', () => {
