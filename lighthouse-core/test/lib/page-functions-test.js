@@ -43,6 +43,13 @@ describe('Page Functions', () => {
       ), '<div id="1">');
     });
 
+    it('should handle dom nodes that cannot be inspected', () => {
+      const element = dom.createElement('div');
+      element.cloneNode = () => {
+        throw new Error('oops!');
+      };
+      assert.equal(pageFunctions.getOuterHTMLSnippet(element), '<div>');
+    });
     it('ignores when attribute not found', () => {
       assert.equal(pageFunctions.getOuterHTMLSnippet(
         dom.createElement('div', '', {'id': '1', 'style': 'style', 'aria-label': 'label'}),
