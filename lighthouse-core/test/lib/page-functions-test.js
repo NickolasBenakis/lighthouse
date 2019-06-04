@@ -43,7 +43,7 @@ describe('Page Functions', () => {
       ), '<div id="1">');
     });
 
-    it('should handle dom nodes that cannot be inspected', () => {
+    it('should handle dom nodes that cannot be cloned', () => {
       const element = dom.createElement('div');
       element.cloneNode = () => {
         throw new Error('oops!');
