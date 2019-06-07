@@ -107,14 +107,15 @@ function getElementsInDocument(selector) {
 
 /**
  * Gets the opening tag text of the given node.
- * @param {Element} element
+ * @param {Element|ShadowRoot} element
  * @param {Array<string>=} ignoreAttrs An optional array of attribute tags to not include in the HTML snippet.
  * @return {string}
  */
 /* istanbul ignore next */
 function getOuterHTMLSnippet(element, ignoreAttrs = []) {
   try {
-    if (element instanceof ShadowRoot && element.host && element.localName !== 'a') {
+    // ShadowRoots are sometimes passed in; use their hosts' outerHTML.
+    if (element instanceof ShadowRoot) {
       element = element.host;
     }
 
@@ -126,6 +127,7 @@ function getOuterHTMLSnippet(element, ignoreAttrs = []) {
     const match = clone.outerHTML.match(reOpeningTag);
     return (match && match[0]) || '';
   } catch (_) {
+    // As a last resort, fall back to localName.
     return `<${element.localName}>`;
   }
 }
